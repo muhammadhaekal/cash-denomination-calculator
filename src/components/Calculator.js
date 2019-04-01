@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import CoinImg from "../img/coins.png";
+import MoneyImg from "../img/money-stack.png";
 
 const CalcContainer = styled.div({
   display: "grid",
@@ -39,10 +40,6 @@ const CheckboxContainer = styled.span({
   marginTop: "5px"
 });
 
-const CheckboxInput = styled.input({
-  margin: "0"
-});
-
 class Calculator extends Component {
   state = {
     amount: 0,
@@ -73,40 +70,35 @@ class Calculator extends Component {
           <DetailInput>Denominations</DetailInput>
           <CheckboxesContainer>
             <CheckboxContainer>
-              <CheckboxInput
-                type="checkbox"
-                name="100000"
-                value={true}
-                onChange={this.handleOnChange}
-              />
+              <img src={MoneyImg} alt="money-stack" />
               <span>Rp.100.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <img src="/" alt="" />
+              <img src={MoneyImg} alt="money-stack" />
               <span>Rp.50.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <img src={MoneyImg} alt="money-stack" />
               <span>Rp.20.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <img src={MoneyImg} alt="money-stack" />
               <span>Rp.10.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <img src={MoneyImg} alt="money-stack" />
               <span>Rp.5.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <img src={MoneyImg} alt="money-stack" />
               <span>Rp.1.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <img src={CoinImg} alt="coins" />
               <span>Rp.100</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <img src={CoinImg} alt="coins" />
               <span>Rp.50</span>
             </CheckboxContainer>
           </CheckboxesContainer>
@@ -117,6 +109,7 @@ class Calculator extends Component {
           Necessitatibus, magnam perferendis? Hic ratione perspiciatis
           distinctio, incidunt numquam pariatur molestiae voluptatibus.
         </ResultContainer>
+        <button />
       </CalcContainer>
     );
   }
