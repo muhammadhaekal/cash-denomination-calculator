@@ -44,12 +44,17 @@ const CheckboxInput = styled.input({
 
 class Calculator extends Component {
   state = {
-    amount: 0
+    amount: 0,
+    100000: true
   };
 
   handleOnChange = e => {
+    const target = e.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+
     this.setState({
-      [e.target.name]: e.target.value
+      [name]: value
     });
   };
 
@@ -67,11 +72,16 @@ class Calculator extends Component {
           <DetailInput>Denominations</DetailInput>
           <CheckboxesContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <CheckboxInput
+                type="checkbox"
+                name="100000"
+                value={true}
+                onChange={this.handleOnChange}
+              />
               <span>Rp.100.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
-              <CheckboxInput type="checkbox" name="1" id="1" />
+              <img src="/" alt="" />
               <span>Rp.50.000</span>
             </CheckboxContainer>
             <CheckboxContainer>
