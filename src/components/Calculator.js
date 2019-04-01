@@ -20,7 +20,19 @@ class Calculator extends Component {
 
   handleSubmit = () => {
     let amount = this.state.amount;
-    let error;
+
+    try {
+      // Check and Reformat User Input
+      amount = this.formatAndCheckInput(amount);
+      // remove space, dot, and Rp before convert to number
+      amount = amount.replace(/[#_.Rp ]/g, "");
+      console.log(amount);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  formatAndCheckInput = amount => {
     const lastThreeChar = amount.substring(amount.length - 3, amount.length);
 
     // If the last substring is ",00" remove it
@@ -30,7 +42,7 @@ class Calculator extends Component {
 
     // If theres "," after ",00" removed then error
     if (amount.includes(",")) {
-      error = "invalid separator";
+      throw new Error("invalid separator");
     }
 
     // Remove Rp from beginning of the string
@@ -40,12 +52,12 @@ class Calculator extends Component {
 
     // If theres "Rp" after "Rp" removed from the beginning of the string then error
     if (amount.includes("Rp")) {
-      error = "invalid separator";
+      throw new Error("invalid separator");
     }
 
     // The beginning of the string must be a number
     if (isNaN(amount[0])) {
-      error = "invalid separator";
+      throw new Error("invalid separator");
     }
 
     // Remove leading zero from string
@@ -58,15 +70,12 @@ class Calculator extends Component {
       const reversedArr = amount.split("").reverse();
       reversedArr.forEach((char, i) => {
         if ((i + 1) % 4 === 0 && char !== "." && !isNaN(char)) {
-          error = "invalid separator";
+          throw new Error("invalid separator");
         }
       });
     }
 
-    console.log(amount);
-    console.log(error);
-    // remove space, dot, and Rp before convert to number
-    console.log(amount.replace(/[#_.Rp ]/g, ""));
+    return amount;
   };
 
   render() {
