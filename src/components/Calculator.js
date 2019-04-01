@@ -14,7 +14,9 @@ const FormContainer = styled.div({
 
 const CashInput = styled.input({
   borderRadius: "10px",
-  border: "2px solid black"
+  border: "2px solid grey",
+  marginBottom: "10px",
+  paddingLeft: "10px"
 });
 
 const DetailInput = styled.h3({
@@ -26,24 +28,76 @@ const ResultContainer = styled.div({
 });
 
 const CheckboxesContainer = styled.div({
-  border: "2px solid black",
   display: "grid",
-  gridTemplateColumns: "25% 25%"
+  gridTemplateColumns: "25% 25% 25% 25%"
+});
+
+const CheckboxContainer = styled.span({
+  display: "flex",
+  alignItems: "center",
+  marginTop: "5px"
+});
+
+const CheckboxInput = styled.input({
+  margin: "0"
 });
 
 class Calculator extends Component {
+  state = {
+    amount: 0
+  };
+
+  handleOnChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
   render() {
     return (
       <CalcContainer>
         <FormContainer>
           <DetailInput>Amount</DetailInput>
-          <CashInput type="text" />
+          <CashInput
+            type="text"
+            name="amount"
+            value={this.state.amount}
+            onChange={this.handleOnChange}
+          />
           <DetailInput>Denominations</DetailInput>
           <CheckboxesContainer>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione
-            sapiente obcaecati fuga, necessitatibus sequi totam rem incidunt,
-            libero maxime nesciunt officia quam optio odio quisquam, ea dicta.
-            Enim, incidunt maiores!
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.100.000</span>
+            </CheckboxContainer>
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.50.000</span>
+            </CheckboxContainer>
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.20.000</span>
+            </CheckboxContainer>
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.10.000</span>
+            </CheckboxContainer>
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.5.000</span>
+            </CheckboxContainer>
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.1.000</span>
+            </CheckboxContainer>
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.100</span>
+            </CheckboxContainer>
+            <CheckboxContainer>
+              <CheckboxInput type="checkbox" name="1" id="1" />
+              <span>Rp.50</span>
+            </CheckboxContainer>
           </CheckboxesContainer>
         </FormContainer>
         <ResultContainer>
