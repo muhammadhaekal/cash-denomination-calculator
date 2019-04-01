@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import CoinImg from "../img/coins.png";
 
 const CalcContainer = styled.div({
   display: "grid",
