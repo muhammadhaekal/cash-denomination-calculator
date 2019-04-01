@@ -4,7 +4,8 @@ import Denominations from "./Denominations";
 
 class Calculator extends Component {
   state = {
-    amount: 0
+    amount: "Rp002.000",
+    result: null
   };
 
   handleOnChange = e => {
@@ -15,6 +16,57 @@ class Calculator extends Component {
     this.setState({
       [name]: value
     });
+  };
+
+  handleSubmit = () => {
+    let amount = this.state.amount;
+    let error;
+    const lastThreeChar = amount.substring(amount.length - 3, amount.length);
+
+    // If the last substring is ",00" remove it
+    if (lastThreeChar === ",00") {
+      amount = amount.slice(0, amount.length - 3);
+    }
+
+    // If theres "," after ",00" removed then error
+    if (amount.includes(",")) {
+      error = "invalid separator";
+    }
+
+    // Remove Rp from beginning of the string
+    if (amount.substr(0, 2) === "Rp") {
+      amount = amount.slice(2, amount.length);
+    }
+
+    // If theres "Rp" after "Rp" removed from the beginning of the string then error
+    if (amount.includes("Rp")) {
+      error = "invalid separator";
+    }
+
+    // The beginning of the string must be a number
+    if (isNaN(amount[0])) {
+      error = "invalid separator";
+    }
+
+    // Remove leading zero from string
+    if (amount[0] === "0") {
+      amount = amount.replace(/^0+/, "");
+    }
+
+    // Check "." separator
+    if (amount.includes(".")) {
+      const reversedArr = amount.split("").reverse();
+      reversedArr.forEach((char, i) => {
+        if ((i + 1) % 4 === 0 && char !== "." && !isNaN(char)) {
+          error = "invalid separator";
+        }
+      });
+    }
+
+    console.log(amount);
+    console.log(error);
+    // remove space, dot, and Rp before convert to number
+    console.log(amount.replace(/[#_.Rp ]/g, ""));
   };
 
   render() {
@@ -38,7 +90,7 @@ class Calculator extends Component {
             <div>2</div>
           </ResultList>
         </ResultContainer>
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
       </CalcContainer>
     );
   }
