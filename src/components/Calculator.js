@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Denominations from "./Denominations";
-import MoneyImg from "../img/money-stack.png";
+import Result from "./Result";
 
 class Calculator extends Component {
   state = {
@@ -85,6 +85,16 @@ class Calculator extends Component {
       amount = amount.replace(/^0+/, "");
     }
 
+    // Remove leading soace from string
+    if (amount.includes(" ")) {
+      amount = amount.replace(/^ +/, "");
+    }
+
+    // If still include space
+    if (amount.includes(" ")) {
+      throw new Error("invalid format");
+    }
+
     // Check "." separator
     if (amount.includes(".")) {
       const reversedArr = amount.split("").reverse();
@@ -101,23 +111,8 @@ class Calculator extends Component {
     return amount;
   };
 
-  formatNumToStr = number => {
-    number = number.toString().split("");
-    if (number.length > 3 && number[0] !== "l") {
-      number.splice(number.length - 3, 0, ".");
-      number = number.join("");
-      return `Rp.${number}`;
-    } else if (!isNaN(number.join(""))) {
-      number = number.join("");
-      return `Rp.${number}`;
-    } else {
-      number = number.join("");
-      return number;
-    }
-  };
-
   render() {
-    const { amount, result } = this.state;
+    const { amount, result, error } = this.state;
     return (
       <CalcContainer>
         <div>
@@ -136,24 +131,7 @@ class Calculator extends Component {
             <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
           </ButtonContainer>
         </div>
-        <ResultContainer>
-          <ResultHeading>Result</ResultHeading>
-          {this.state.error ? (
-            <WarningText>{this.state.error}</WarningText>
-          ) : null}
-          <ResultList>
-            {result.map(({ denomination, quantity }, i) => {
-              if (quantity > 0) {
-                return (
-                  <ListContainer key={i}>
-                    <img src={MoneyImg} alt="coins" />
-                    {`${this.formatNumToStr(denomination)} x ${quantity}`}
-                  </ListContainer>
-                );
-              }
-            })}
-          </ResultList>
-        </ResultContainer>
+        <Result result={result} error={error} />
       </CalcContainer>
     );
   }
@@ -183,10 +161,6 @@ const DetailInput = styled.h3({
   margin: "10px 0"
 });
 
-const ResultContainer = styled.div({
-  padding: "20px"
-});
-
 const SubmitButton = styled.button({
   fontWeight: "bolder",
   width: "100%",
@@ -195,25 +169,9 @@ const SubmitButton = styled.button({
   padding: "7px"
 });
 
-const ResultHeading = styled.h2({
-  textAlign: "center"
-});
-
-const ResultList = styled.div({});
-
 const ButtonContainer = styled.div({
   display: "flex",
   justifyContent: "center"
 });
 
-const ListContainer = styled.div({
-  display: "flex",
-  justifyContent: "center",
-  margin: "8px 0"
-});
-
-const WarningText = styled.h4({
-  color: "red",
-  textAlign: "center"
-});
 export default Calculator;
