@@ -5,7 +5,7 @@ import Result from "./Result";
 
 class Calculator extends Component {
   state = {
-    amount: "Rp002.000",
+    amount: "",
     result: [],
     error: null
   };
