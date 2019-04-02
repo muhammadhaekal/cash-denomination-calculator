@@ -44,7 +44,8 @@ class Calculator extends Component {
       });
     } catch (err) {
       this.setState({
-        error: err.message
+        error: err.message,
+        result: []
       });
     }
   };
