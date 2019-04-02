@@ -38,6 +38,17 @@ class Calculator extends Component {
 
       result.push({ denomination: "left", quantity: amount });
 
+      // result.forEach(res => {
+      //   console.log(res);
+      // });
+      var newResult = "";
+
+      result.forEach(res => {
+        if (res.quantity > 0) {
+          newResult += `${res.quantity}x${res.denomination}, `;
+        }
+      });
+      console.log(newResult);
       // SetState
       this.setState({
         result
