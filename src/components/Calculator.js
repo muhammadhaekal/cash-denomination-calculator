@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import Denominations from "./Denominations";
+import MoneyImg from "../img/money-stack.png";
 
 class Calculator extends Component {
   state = {
     amount: "Rp002.000",
-    result: []
+    result: [],
+    error: null
   };
 
   handleOnChange = e => {
@@ -20,7 +22,7 @@ class Calculator extends Component {
 
   handleSubmit = () => {
     let amount = this.state.amount;
-    let denominations = [10000, 50000, 20000, 10000, 5000, 1000, 500, 100, 50];
+    let denominations = [100000, 50000, 20000, 10000, 5000, 1000, 500, 100, 50];
 
     try {
       // Check and Reformat User Input
@@ -34,16 +36,23 @@ class Calculator extends Component {
         amount -= quantity * denomination;
       });
 
+      result.push({ denomination: "left", quantity: amount });
+
       // SetState
       this.setState({
         result
       });
     } catch (err) {
-      console.log(err);
+      this.setState({
+        error: err.message
+      });
     }
   };
 
   formatAndCheckInput = amount => {
+    this.setState({
+      error: null
+    });
     const lastThreeChar = amount.substring(amount.length - 3, amount.length);
 
     // If the last substring is ",00" remove it
@@ -53,7 +62,7 @@ class Calculator extends Component {
 
     // If theres "," after ",00" removed then error
     if (amount.includes(",")) {
-      throw new Error("invalid separator");
+      throw new Error("invalid format");
     }
 
     // Remove Rp from beginning of the string
@@ -63,12 +72,12 @@ class Calculator extends Component {
 
     // If theres "Rp" after "Rp" removed from the beginning of the string then error
     if (amount.includes("Rp")) {
-      throw new Error("invalid separator");
+      throw new Error("invalid format");
     }
 
     // The beginning of the string must be a number
     if (isNaN(amount[0])) {
-      throw new Error("invalid separator");
+      throw new Error("invalid format");
     }
 
     // Remove leading zero from string
@@ -81,7 +90,7 @@ class Calculator extends Component {
       const reversedArr = amount.split("").reverse();
       reversedArr.forEach((char, i) => {
         if ((i + 1) % 4 === 0 && char !== "." && !isNaN(char)) {
-          throw new Error("invalid separator");
+          throw new Error("invalid format");
         }
       });
     }
@@ -92,25 +101,59 @@ class Calculator extends Component {
     return amount;
   };
 
+  formatNumToStr = number => {
+    number = number.toString().split("");
+    if (number.length > 3 && number[0] !== "l") {
+      number.splice(number.length - 3, 0, ".");
+      number = number.join("");
+      return `Rp.${number}`;
+    } else if (!isNaN(number.join(""))) {
+      number = number.join("");
+      return `Rp.${number}`;
+    } else {
+      number = number.join("");
+      return number;
+    }
+  };
+
   render() {
+    const { amount, result } = this.state;
     return (
       <CalcContainer>
-        <FormContainer>
-          <DetailInput>Amount</DetailInput>
-          <CashInput
-            type="text"
-            name="amount"
-            value={this.state.amount}
-            onChange={this.handleOnChange}
-          />
-          <DetailInput>Denominations</DetailInput>
-          <Denominations />
-        </FormContainer>
+        <div>
+          <FormContainer>
+            <DetailInput>Amount</DetailInput>
+            <CashInput
+              type="text"
+              name="amount"
+              value={amount}
+              onChange={this.handleOnChange}
+            />
+            <DetailInput>Denominations</DetailInput>
+            <Denominations />
+          </FormContainer>
+          <ButtonContainer>
+            <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
+          </ButtonContainer>
+        </div>
         <ResultContainer>
           <ResultHeading>Result</ResultHeading>
-          <ResultList />
+          {this.state.error ? (
+            <WarningText>{this.state.error}</WarningText>
+          ) : null}
+          <ResultList>
+            {result.map(({ denomination, quantity }, i) => {
+              if (quantity > 0) {
+                return (
+                  <ListContainer key={i}>
+                    <img src={MoneyImg} alt="coins" />
+                    {`${this.formatNumToStr(denomination)} x ${quantity}`}
+                  </ListContainer>
+                );
+              }
+            })}
+          </ResultList>
         </ResultContainer>
-        <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
       </CalcContainer>
     );
   }
@@ -146,7 +189,9 @@ const ResultContainer = styled.div({
 
 const SubmitButton = styled.button({
   fontWeight: "bolder",
-  margin: "0 20px",
+  width: "100%",
+  marginLeft: "20px",
+  marginRight: "20px",
   padding: "7px"
 });
 
@@ -156,4 +201,19 @@ const ResultHeading = styled.h2({
 
 const ResultList = styled.div({});
 
+const ButtonContainer = styled.div({
+  display: "flex",
+  justifyContent: "center"
+});
+
+const ListContainer = styled.div({
+  display: "flex",
+  justifyContent: "center",
+  margin: "8px 0"
+});
+
+const WarningText = styled.h4({
+  color: "red",
+  textAlign: "center"
+});
 export default Calculator;

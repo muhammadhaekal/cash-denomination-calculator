@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import CoinImg from "../img/coins.png";
 import MoneyImg from "../img/money-stack.png";
 
 const Denominations = () => {
@@ -31,11 +30,11 @@ const Denominations = () => {
         <span>Rp.1.000</span>
       </DenominationContainer>
       <DenominationContainer>
-        <img src={CoinImg} alt="coins" />
+        <img src={MoneyImg} alt="coins" />
         <span>Rp.100</span>
       </DenominationContainer>
       <DenominationContainer>
-        <img src={CoinImg} alt="coins" />
+        <img src={MoneyImg} alt="coins" />
         <span>Rp.50</span>
       </DenominationContainer>
     </DenominationsContainer>
