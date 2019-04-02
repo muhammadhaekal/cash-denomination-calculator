@@ -5,7 +5,7 @@ import Denominations from "./Denominations";
 class Calculator extends Component {
   state = {
     amount: "Rp002.000",
-    result: null
+    result: []
   };
 
   handleOnChange = e => {
@@ -20,13 +20,24 @@ class Calculator extends Component {
 
   handleSubmit = () => {
     let amount = this.state.amount;
+    let denominations = [10000, 50000, 20000, 10000, 5000, 1000, 500, 100, 50];
 
     try {
       // Check and Reformat User Input
       amount = this.formatAndCheckInput(amount);
-      // remove space, dot, and Rp before convert to number
-      amount = amount.replace(/[#_.Rp ]/g, "");
-      console.log(amount);
+
+      //Calculate Result
+      let result = [];
+      denominations.forEach(denomination => {
+        const quantity = Math.floor(amount / denomination);
+        result.push({ denomination, quantity });
+        amount -= quantity * denomination;
+      });
+
+      // SetState
+      this.setState({
+        result
+      });
     } catch (err) {
       console.log(err);
     }
@@ -75,6 +86,9 @@ class Calculator extends Component {
       });
     }
 
+    // remove space, dot, and Rp before convert to number
+    amount = amount.replace(/[#_.Rp ]/g, "");
+
     return amount;
   };
 
@@ -94,10 +108,7 @@ class Calculator extends Component {
         </FormContainer>
         <ResultContainer>
           <ResultHeading>Result</ResultHeading>
-          <ResultList>
-            <div>1</div>
-            <div>2</div>
-          </ResultList>
+          <ResultList />
         </ResultContainer>
         <SubmitButton onClick={this.handleSubmit}>Submit</SubmitButton>
       </CalcContainer>
